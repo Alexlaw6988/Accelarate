@@ -5,8 +5,8 @@
 
 
             <div class="col-md-12">
-                <div class=" row">
-                    <div class="input-group col-md-9 pull-left">
+                <div >
+                    <div class="input-group col-md-12 pull-left">
                         <ul style="color:red; font-weight: bold;">
                             <li *ngFor="let err of errors">
                                 {{err}}
@@ -14,9 +14,14 @@
                         </ul>
                     </div>
                     <div class="input-group col-md-2 pull-right">
-                        <input class="form-control " autofocus="" required="" type="text" placeholder="Filter">
+                        
+                        <select class="form-control col-md-2" [(ngModel)]="filter" placeholder="Filter">
+                            <option value="All">All</option>
+                            <option value="Error">Error</option>
+                            
+                        </select>
                         <span class="input-group-btn">
-                            <a type="button" class="btn btn-default"><i class="glyphicon glyphicon-filter"></i></a>
+                            <a class="btn btn-default"><i class="glyphicon glyphicon-filter"></i></a>
                         </span>
                     </div>
                 </div>
@@ -39,32 +44,51 @@
                     <tbody>
 
                         <tr *ngFor="let res of results ; let i =index;">
-                            <td>{{i+1}}</td>
-                            <td>
-                                <input class="form-control" id="eqpInit" [ngClass]="{'test' : test(eqpInit,i)}" name="eqpInit" [(ngModel)]="res.eqpInit" type="text" required pattern="[a-zA-Z]+" placeholder="Eqp Init" #eqpInit="ngModel" >
-                                {{test(eqpInit,i)}}
-                                <!--<div *ngIf="test(eqpInit,i)"
-                                     class="alert alert-danger">eqpInit.invalid</div>-->
+                            <td *ngIf="filter=='All'|| res.error">{{i+1}}</td>
+                            <td *ngIf="filter=='All'|| res.error">
+                                <input class="form-control" id="eqpInit" [ngClass]="{'test' : eqpInit.invalid}" name="eqpInit" [(ngModel)]="res.eqpInit" type="text" pattern="[a-zA-Z]+" placeholder="Eqp Init" #eqpInit="ngModel">
+                                <div *ngIf="eqpInit.invalid">{{logError(i,'Eqp Init is Invalid')}}</div>                               
+                                <div *ngIf="!eqpInit.invalid">{{removeError(i,'Eqp Init is Invalid')}}</div> 
+                            <td *ngIf="filter=='All'|| res.error">
+                            <input class="form-control" id="eqpNumb" name="eqpNumb" [ngClass]="{'test' : eqpNumb.invalid}" [(ngModel)]="res.eqpNumb" type="text" pattern="[0-9]+" placeholder="Eqp Numb" #eqpNumb="ngModel">
+                                <div *ngIf="eqpNumb.invalid">{{logError(i,'Eqp Numb is Invalid')}}</div>
+                                <div *ngIf="!eqpNumb.invalid">{{removeError(i,'Eqp Numb is Invalid')}}</div>
                             </td>
-                            <td><input class="form-control" id="eqpNumb" name="eqpNumb" [ngClass]="{'test' : eqpNumb.invalid}" [(ngModel)]="res.eqpNumb" type="text" required pattern="[0-9]+" placeholder="Eqp Numb" #eqpNumb="ngModel" ></td>
-                            <td><input class="form-control" id="wbNum" name="wbNum" [ngClass]="{'test' : wbNum.invalid}" [(ngModel)]="res.wbNum" type="text" required pattern="[0-9]+" placeholder="Wb#" #wbNum="ngModel" ></td>
-                            <td>
+                            <td *ngIf="filter=='All'|| res.error">
+                            <input class="form-control" id="wbNum" name="wbNum" [ngClass]="{'test' : wbNum.invalid}" [(ngModel)]="res.wbNum" type="text" pattern="[0-9]+" placeholder="Wb#" #wbNum="ngModel">
+                                <div *ngIf="wbNum.invalid">{{logError(i,'Wb Numb is Invalid')}}</div>
+                                <div *ngIf="!wbNum.invalid">{{removeError(i,'Wb Numb is Invalid')}}</div>
+                            </td>
+                            <td *ngIf="filter=='All'|| res.error">
                                 <div class="input-group" daterangepicker [options]="singlePicker" (selected)="singleSelect($event,i,'wbDate')">
 
-                                    <input class="form-control" type="text" id="wbDate" name="wbDate" [ngClass]="{'test' : wbDate.invalid}" [ngModel]="res.wbDate | date:'MM/d/y'" (ngModelChange)="res.wbDate=$event" placeholder="MM/DD/YYYY" #wbDate="ngModel" >
+                                    <input class="form-control" type="text" id="wbDate" name="wbDate" [ngClass]="{'test' : wbDate.invalid}" [ngModel]="res.wbDate | date:'MM/d/y'" (ngModelChange)="res.wbDate=$event" placeholder="MM/DD/YYYY" #wbDate="ngModel">
                                     <span class="input-group-btn">
-                                        <span  class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        <span class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></span>
                                     </span>
                                 </div>
+                                <div *ngIf="wbDate.invalid">{{logError(i,'Wb date is Invalid')}}</div>
+                                <div *ngIf="!wbDate.invalid">{{removeError(i,'Wb date is Invalid')}}</div>
                             </td>
-                            <td><input class="form-control" id="org" name="org" [ngClass]="{'test' : org.invalid}" [(ngModel)]="res.org" type="text" required pattern="[a-zA-Z]+" placeholder="Org" #org="ngModel" ></td>
-                            <td><input class="form-control" id="dest" name="dest" [ngClass]="{'test' : dest.invalid}" [(ngModel)]="res.dest" type="text" required pattern="[a-zA-Z]+" placeholder="Dest" #dest="ngModel" ></td>
-                            <td>
+                            <td *ngIf="filter=='All'|| res.error">
+                            <input class="form-control" id="org" name="org" [ngClass]="{'test' : org.invalid}" [(ngModel)]="res.org" type="text" pattern="[a-zA-Z]+" placeholder="Org" #org="ngModel">
+                                <div *ngIf="org.invalid">{{logError(i,'Org is Invalid')}}</div>
+                                <div *ngIf="!org.invalid">{{removeError(i,'Org is Invalid')}}</div>
+                            </td>
+                            <td *ngIf="filter=='All'|| res.error">
+                            <input class="form-control" id="dest" name="dest" [ngClass]="{'test' : dest.invalid}" [(ngModel)]="res.dest" type="text" pattern="[a-zA-Z]+" placeholder="Dest" #dest="ngModel">
+                                <div *ngIf="dest.invalid">{{logError(i,'Dest is Invalid')}}</div>
+                                <div *ngIf="!dest.invalid">{{removeError(i,'Dest is Invalid')}}</div>
+                            </td>
+                            <td *ngIf="filter=='All'|| res.error">
+                                
                                 <div class="input-group">
                                     <span class="input-group-btn">
-                                        <span class="btn btn-default" ><i class="glyphicon glyphicon-usd"></i></span>
-                                    </span><input class="form-control" id="amount" name="amount" [ngClass]="{'test' : amount.invalid}" [(ngModel)]="res.amount" type="text" required pattern="^[0-9]+(\.[0-9]+)?$" placeholder="Amount" #amount="ngModel" />
+                                        <span class="btn btn-default"><i class="glyphicon glyphicon-usd"></i></span>
+                                    </span><input class="form-control" id="amount" name="amount" [ngClass]="{'test' : amount.invalid}" [(ngModel)]="res.amount" type="text" pattern="^[0-9]+(\.[0-9]+)?$" placeholder="Amount" #amount="ngModel" />
                                 </div>
+                                <div *ngIf="amount.invalid">{{logError(i,'Amount is Invalid')}}</div>
+                                <div *ngIf="!amount.invalid">{{removeError(i,'Amount is Invalid')}}</div>
                             </td>
                         </tr>
 

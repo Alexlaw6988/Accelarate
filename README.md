@@ -1,2 +1,0 @@
-# Accelarate
-test project
