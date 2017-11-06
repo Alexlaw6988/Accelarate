@@ -1,0 +1,78 @@
+<main class="container-fluid">
+    <div class="row">
+        <div class=" main">
+
+
+
+            <div class="col-md-12">
+                <div class=" row">
+                    <div class="input-group col-md-9 pull-left">
+                        <ul style="color:red; font-weight: bold;">
+                            <li *ngFor="let err of errors">
+                                {{err}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="input-group col-md-2 pull-right">
+                        <input class="form-control " autofocus="" required="" type="text" placeholder="Filter">
+                        <span class="input-group-btn">
+                            <a type="button" class="btn btn-default"><i class="glyphicon glyphicon-filter"></i></a>
+                        </span>
+                    </div>
+                </div>
+
+                <hr style="margin:5px 0px 0px 0px">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Row#</th>
+                            <th>Eqp Init</th>
+                            <th>Eqp Numb</th>
+                            <th>Wb#</th>
+                            <th>Wb date</th>
+                            <th>Org</th>
+                            <th>Dest</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr *ngFor="let res of results ; let i =index;">
+                            <td>{{i+1}}</td>
+                            <td>
+                                <input class="form-control" id="eqpInit" [ngClass]="{'test' : test(eqpInit,i)}" name="eqpInit" [(ngModel)]="res.eqpInit" type="text" required pattern="[a-zA-Z]+" placeholder="Eqp Init" #eqpInit="ngModel" >
+                                {{test(eqpInit,i)}}
+                                <!--<div *ngIf="test(eqpInit,i)"
+                                     class="alert alert-danger">eqpInit.invalid</div>-->
+                            </td>
+                            <td><input class="form-control" id="eqpNumb" name="eqpNumb" [ngClass]="{'test' : eqpNumb.invalid}" [(ngModel)]="res.eqpNumb" type="text" required pattern="[0-9]+" placeholder="Eqp Numb" #eqpNumb="ngModel" ></td>
+                            <td><input class="form-control" id="wbNum" name="wbNum" [ngClass]="{'test' : wbNum.invalid}" [(ngModel)]="res.wbNum" type="text" required pattern="[0-9]+" placeholder="Wb#" #wbNum="ngModel" ></td>
+                            <td>
+                                <div class="input-group" daterangepicker [options]="singlePicker" (selected)="singleSelect($event,i,'wbDate')">
+
+                                    <input class="form-control" type="text" id="wbDate" name="wbDate" [ngClass]="{'test' : wbDate.invalid}" [ngModel]="res.wbDate | date:'MM/d/y'" (ngModelChange)="res.wbDate=$event" placeholder="MM/DD/YYYY" #wbDate="ngModel" >
+                                    <span class="input-group-btn">
+                                        <span  class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></span>
+                                    </span>
+                                </div>
+                            </td>
+                            <td><input class="form-control" id="org" name="org" [ngClass]="{'test' : org.invalid}" [(ngModel)]="res.org" type="text" required pattern="[a-zA-Z]+" placeholder="Org" #org="ngModel" ></td>
+                            <td><input class="form-control" id="dest" name="dest" [ngClass]="{'test' : dest.invalid}" [(ngModel)]="res.dest" type="text" required pattern="[a-zA-Z]+" placeholder="Dest" #dest="ngModel" ></td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <span class="btn btn-default" ><i class="glyphicon glyphicon-usd"></i></span>
+                                    </span><input class="form-control" id="amount" name="amount" [ngClass]="{'test' : amount.invalid}" [(ngModel)]="res.amount" type="text" required pattern="^[0-9]+(\.[0-9]+)?$" placeholder="Amount" #amount="ngModel" />
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <button class="btn btn-lg btn-primary pull-right" type="button">Finalize</button>
+        </div>
+    </div>
+</main>

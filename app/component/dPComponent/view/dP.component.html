@@ -1,0 +1,7 @@
+<div  class="input-group" daterangepicker [options]="singlePicker" (selected)="singleSelect($event)">  
+          
+				<input class="form-control" type="text" [ngModel]="singleDate | date:'MM/d/y'" (ngModelChange)="singleDate=$event(onSingleDateChange)"  placeholder="MM/DD/YYYY" />
+                <span class="input-group-btn">
+                    <a type="button" class="btn btn-default" ><i class="glyphicon glyphicon-calendar"></i></a>
+                </span>
+            </div>
